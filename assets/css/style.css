@@ -1,0 +1,122 @@
+/* IWS Woo Extension - 1.0.0 */
+
+.iws-product-slider {
+    padding: 75px 0;
+}
+
+.iws-product-slider {
+    position: relative;
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
+}
+
+.iws-product-slider .iws-inner {
+    overflow: hidden;
+}
+
+.iws-product-slider .swiper-button-next {
+    right: -30px;
+}
+
+.iws-product-slider .swiper-button-prev {
+    left: -30px;
+}
+
+.iws-slide-content {
+    position: relative;
+    padding: 12px;
+    box-shadow: 0px 0px 5px 0px #f0f0f0;
+    border: 1px solid #eee;
+    max-width: 277px;
+    min-height: 285px;
+    background: #fff;
+}
+
+.iws-product-img {
+    max-width: 70%;
+    width: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.iws-product-img img {
+    max-width: 100%;
+    display: block;
+    transition: 0.3s;
+}
+
+.iws-slide-content:hover .iws-product-img img {
+    transform: scale(1.1);
+}
+
+.iws-product-img i {
+    position: absolute;
+    content: "";
+    right: 10px;
+    top: 10px;
+    font-size: 16px;
+    color: #000;
+}
+
+p {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    white-space: normal;
+    min-height: 40px;
+    height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #212529;
+}
+
+.star-rating i {
+    font-size: 13px;
+    color: #f7c434;
+}
+
+.star-rating-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 10px 0;
+}
+
+.star-rating {
+    padding: 0 5px 0 0;
+}
+
+.star-rating-wrap .total-review {
+    font-size: 12px;
+}
+
+.price-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.amount {
+    font-size: 15px !important;
+    color: #929495;
+}
+
+del.amount {
+    margin-left: 0.5rem!important;
+}
+
+.variant-offer {
+    padding: 3px 9px;
+    font-size: 12px;
+    background-color: transparent;
+    border: 1px solid #0693e3;
+    color: #F44336!important;
+    display: inline-block;
+    clear: both;
+    margin: 3px 0 3px 4px !important;
+    font-weight: bold;
+    border-radius: 15px;
+}
