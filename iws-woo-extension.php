@@ -3,7 +3,7 @@
  * Plugin Name: IWS - Woo Extension
  * Description: All the code in this plugin are for learning purpose only, It is recommended not use this on live projects
  * Author: Tanuj Patra
- * Author URI: https://www.youtube.com/channel/UChvgNtbMI8Pnan7R7FrSIng/featured
+ * Author URI: https://www.youtube.com/channel/UChvgNtbMI8Pnan7R7FrSIng
  * Version: 1.0.0
  * Requires at least: 5.7
  * Requires PHP: 7.2
@@ -52,149 +52,83 @@ function iws_product_slider($atts){
         $atts
     );
 
+    $tag = 'hoodie,t-shirt,beanie';
+    $tag = sanitize_text_field($tag);
+    $tag = explode(',', $tag);
+    $count = sanitize_text_field($count);
+
+    $query = array(
+        'post_type' => 'product',
+        'post_status' => 'publish',
+        'post_per_page' => $count,
+        'tax_query' => array(
+            array(
+                'taxonomy' => 'product_tag',
+                'field' => 'slug',
+                'terms' => $tag,
+            )
+        ),
+    );
+
+    $products = new WP_Query($query);
+
     ob_start();
-    ?>
-    <div class="iws-product-slider">
+    if($products->have_posts()):
+        ?>
+    <div class="iws-product-slider woocommerce">
         <div class="iws-inner">
             <div class="iws-swiper">
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <div class="iws-slide-content">
-                            <div class="iws-product-img">
-                                <img src="http://localhost/youtube/wp-content/uploads/2022/02/cap-2-300x300.jpg" alt="product">
-                                <i class="far fa-heart"></i>
+
+        <?php
+        while ($products->have_posts()):
+            $products->the_post();
+            $title = get_the_title();
+            $permalink = get_the_permalink();
+            $product = wc_get_product(get_the_id());
+            $img = $product->get_image('woocommerce_thumbnail');
+            $avg_rating = $product->get_average_rating();
+            $rating_percent = ($avg_rating / 5) * 100;
+            $rating_count = $product->get_review_count();
+        ?>
+            <div class="swiper-slide">
+                <div class="iws-slide-content">
+                    <div class="iws-product-img">
+                        <!-- <img src="http://localhost/youtube/wp-content/uploads/2022/02/cap-2-300x300.jpg" alt="product"> -->
+                        <?php echo $img;?>
+                        <i class="far fa-heart"></i>
+                    </div>
+                    <div class="iws-product-detail">
+                        <p><a href="<?php echo $permalink;?>"><?php echo $title;?></a></p>
+                        <div class="star-rating-wrap">
+                            <div class="star-rating">
+                                <span style="width:<?php echo $rating_percent;?>%">
+                                Rated <strong class="rating"><?php echo $avg_rating;?></strong> out of 5
+                                </span>
                             </div>
-                            <div class="iws-product-detail">
-                                <p><a href="#">Product Title goes here | It can be in multi-lines | Or can contain other details</a></p>
-                                <div class="star-rating-wrap">
-                                    <div class="star-rating">
-                                        <i class="fa fa-star " aria-hidden="true"></i>
-                                        <i class="fa fa-star " aria-hidden="true"></i>
-                                        <i class="fa fa-star " aria-hidden="true"></i>
-                                        <i class="fa fa-star " aria-hidden="true"></i>
-                                        <i class="fa fa-star " aria-hidden="true"></i>
-                                    </div>
-                                    <span class="total-review">( 127 Reviews )</span>
-                                </div>
-                                <div class="price-wrap">
-                                    <span class="amount">Rs.7,500</span>
-                                    <del class="amount">Rs.12,400</del>
-                                    <span class="variant-offer">30% Off</span>
-                                </div>
-                            </div>
+                            <span class="total-review">( <?php echo $rating_count;?> Reviews )</span>
+                        </div>
+                        <div class="price-wrap">
+                            <span class="amount">Rs.7,500</span>
+                            <del class="amount">Rs.12,400</del>
+                            <span class="variant-offer">30% Off</span>
                         </div>
                     </div>
-                    <div class="swiper-slide">
-                        <div class="iws-slide-content">
-                            <div class="iws-product-img">
-                                <img src="http://localhost/youtube/wp-content/uploads/2022/02/cap-2-300x300.jpg" alt="product">
-                                <i class="far fa-heart"></i>
-                            </div>
-                            <div class="iws-product-detail">
-                                <p><a href="#">Product Title goes here | It can be in multi-lines | Or can contain other details</a></p>
-                                <div class="star-rating-wrap">
-                                    <div class="star-rating">
-                                        <i class="fa fa-star " aria-hidden="true"></i>
-                                        <i class="fa fa-star " aria-hidden="true"></i>
-                                        <i class="fa fa-star " aria-hidden="true"></i>
-                                        <i class="fa fa-star " aria-hidden="true"></i>
-                                        <i class="fa fa-star " aria-hidden="true"></i>
-                                    </div>
-                                    <span class="total-review">( 127 Reviews )</span>
-                                </div>
-                                <div class="price-wrap">
-                                    <span class="amount">Rs.7,500</span>
-                                    <del class="amount">Rs.12,400</del>
-                                    <span class="variant-offer">30% Off</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="iws-slide-content">
-                            <div class="iws-product-img">
-                                <img src="http://localhost/youtube/wp-content/uploads/2022/02/cap-2-300x300.jpg" alt="product">
-                                <i class="far fa-heart"></i>
-                            </div>
-                            <div class="iws-product-detail">
-                                <p><a href="#">Product Title goes here | It can be in multi-lines | Or can contain other details</a></p>
-                                <div class="star-rating-wrap">
-                                    <div class="star-rating">
-                                        <i class="fa fa-star " aria-hidden="true"></i>
-                                        <i class="fa fa-star " aria-hidden="true"></i>
-                                        <i class="fa fa-star " aria-hidden="true"></i>
-                                        <i class="fa fa-star " aria-hidden="true"></i>
-                                        <i class="fa fa-star " aria-hidden="true"></i>
-                                    </div>
-                                    <span class="total-review">( 127 Reviews )</span>
-                                </div>
-                                <div class="price-wrap">
-                                    <span class="amount">Rs.7,500</span>
-                                    <del class="amount">Rs.12,400</del>
-                                    <span class="variant-offer">30% Off</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="iws-slide-content">
-                            <div class="iws-product-img">
-                                <img src="http://localhost/youtube/wp-content/uploads/2022/02/cap-2-300x300.jpg" alt="product">
-                                <i class="far fa-heart"></i>
-                            </div>
-                            <div class="iws-product-detail">
-                                <p><a href="#">Product Title goes here | It can be in multi-lines | Or can contain other details</a></p>
-                                <div class="star-rating-wrap">
-                                    <div class="star-rating">
-                                        <i class="fa fa-star " aria-hidden="true"></i>
-                                        <i class="fa fa-star " aria-hidden="true"></i>
-                                        <i class="fa fa-star " aria-hidden="true"></i>
-                                        <i class="fa fa-star " aria-hidden="true"></i>
-                                        <i class="fa fa-star " aria-hidden="true"></i>
-                                    </div>
-                                    <span class="total-review">( 127 Reviews )</span>
-                                </div>
-                                <div class="price-wrap">
-                                    <span class="amount">Rs.7,500</span>
-                                    <del class="amount">Rs.12,400</del>
-                                    <span class="variant-offer">30% Off</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="iws-slide-content">
-                            <div class="iws-product-img">
-                                <img src="http://localhost/youtube/wp-content/uploads/2022/02/cap-2-300x300.jpg" alt="product">
-                                <i class="far fa-heart"></i>
-                            </div>
-                            <div class="iws-product-detail">
-                                <p><a href="#">Product Title goes here | It can be in multi-lines | Or can contain other details</a></p>
-                                <div class="star-rating-wrap">
-                                    <div class="star-rating">
-                                        <i class="fa fa-star " aria-hidden="true"></i>
-                                        <i class="fa fa-star " aria-hidden="true"></i>
-                                        <i class="fa fa-star " aria-hidden="true"></i>
-                                        <i class="fa fa-star " aria-hidden="true"></i>
-                                        <i class="fa fa-star " aria-hidden="true"></i>
-                                    </div>
-                                    <span class="total-review">( 127 Reviews )</span>
-                                </div>
-                                <div class="price-wrap">
-                                    <span class="amount">Rs.7,500</span>
-                                    <del class="amount">Rs.12,400</del>
-                                    <span class="variant-offer">30% Off</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                </div>
+            </div> 
+        <?php
+        endwhile;
+        ?>
+
                 </div>
                 <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
             </div>
         </div>
     </div>
-    <?php
+        <?php
+    endif;
+    wp_reset_postdata();
     return ob_get_clean();
 }
 add_shortcode('iws-product-slider', 'iws_product_slider');
