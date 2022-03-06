@@ -43,6 +43,29 @@ function iws_load_scripts(){
 }
 add_action('wp_enqueue_scripts', 'iws_load_scripts');
 
+function iws_get_product_disc($product){
+    if($product->is_type('simple')){
+        $reg_price = $product->get_regular_price();
+        $sale_price = $product->get_sale_price();
+        
+        // Discount%=(Original Price - Sale price)/Original price*100
+        $disc = (($reg_price - $sale_price) / $reg_price) * 100;
+    }
+    else if($product->is_type('variable')){
+        $disc_percentage = [];
+        $prices = $product->get_variation_prices();
+        foreach($prices['price'] as $key => $price){
+            if($prices['regular_price'][$key] !== $price){
+                $disc_percentage[] = round((($prices['regular_price'][$key] - $prices['sale_price'][$key]) / $prices['regular_price'][$key]) * 100);
+            }
+        }
+        $disc = max($disc_percentage);
+    }
+    
+    $html = "<span class='variant-offer'>$disc% Off</span>";
+    return $html;
+}
+
 function iws_product_slider($atts){
     $atts = shortcode_atts(
         array(
@@ -52,8 +75,8 @@ function iws_product_slider($atts){
         $atts
     );
 
-    $tag = 'hoodie,t-shirt,beanie';
-    $tag = sanitize_text_field($tag);
+    // $tag = 'hoodie,t-shirt,beanie';
+    $tag = sanitize_text_field($atts['tag']);
     $tag = explode(',', $tag);
     $count = sanitize_text_field($count);
 
@@ -81,7 +104,7 @@ function iws_product_slider($atts){
                 <div class="swiper-wrapper">
 
         <?php
-        while ($products->have_posts()):
+        while($products->have_posts()):
             $products->the_post();
             $title = get_the_title();
             $permalink = get_the_permalink();
@@ -90,6 +113,8 @@ function iws_product_slider($atts){
             $avg_rating = $product->get_average_rating();
             $rating_percent = ($avg_rating / 5) * 100;
             $rating_count = $product->get_review_count();
+            $price = $product->get_price_html();
+            // $disc_percentage = iws_get_product_disc($product);
         ?>
             <div class="swiper-slide">
                 <div class="iws-slide-content">
@@ -109,9 +134,14 @@ function iws_product_slider($atts){
                             <span class="total-review">( <?php echo $rating_count;?> Reviews )</span>
                         </div>
                         <div class="price-wrap">
-                            <span class="amount">Rs.7,500</span>
-                            <del class="amount">Rs.12,400</del>
-                            <span class="variant-offer">30% Off</span>
+                            <!-- <span class="amount">Rs.7,500</span>
+                            <del class="amount">Rs.12,400</del> -->
+                            <?php echo $price;?>
+                            <?php
+                                if($product->is_on_sale()){
+                                    echo iws_get_product_disc($product);
+                                }
+                            ?>
                         </div>
                     </div>
                 </div>
