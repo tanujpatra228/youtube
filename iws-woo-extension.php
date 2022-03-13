@@ -61,6 +61,22 @@ function iws_get_product_disc($product){
         }
         $disc = max($disc_percentage);
     }
+    elseif($product->is_type('grouped')){
+        $child_products = $product->get_children();
+        $discount = [];
+        foreach($child_products as $product_id){
+            $child_product = wc_get_product($product_id);
+            $reg_price = $child_product->get_regular_price();
+            $sale_price = $child_product->get_sale_price();
+            
+            if(!empty($sale_price) && $sale_price != 0){
+                // Discount%=(Original Price - Sale price)/Original price*100
+                $discount[] = round((($reg_price - $sale_price) / $reg_price) * 100);
+            }
+        }
+        $disc = max($discount);
+    }
+
     
     $html = "<span class='variant-offer'>$disc% Off</span>";
     return $html;
@@ -121,7 +137,8 @@ function iws_product_slider($atts){
                     <div class="iws-product-img">
                         <!-- <img src="http://localhost/youtube/wp-content/uploads/2022/02/cap-2-300x300.jpg" alt="product"> -->
                         <?php echo $img;?>
-                        <i class="far fa-heart"></i>
+                        <!-- <i class="far fa-heart"></i> -->
+                        <?php echo do_shortcode('[ti_wishlists_addtowishlist loop=yes]'); ?>
                     </div>
                     <div class="iws-product-detail">
                         <p><a href="<?php echo $permalink;?>"><?php echo $title;?></a></p>
