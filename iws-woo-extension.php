@@ -179,3 +179,36 @@ function iws_product_slider($atts){
     return ob_get_clean();
 }
 add_shortcode('iws-product-slider', 'iws_product_slider');
+
+/** Custom field in Woocommerce Product */
+// 1. Add custom field
+function iws_custom_field(){
+    woocommerce_wp_text_input(
+        array(
+            'id' => 'iws_custom_text_input',
+            'label' => __('Custom Field', 'woocommerce'),
+            'placeholder' => __('Your Custom Field data', 'woocommerce'),
+            'description' => __('This is Description', 'woocommerce'),
+            'desc_tip' => true,
+        )
+    );
+}
+add_action('woocommerce_product_options_general_product_data', 'iws_custom_field');
+
+// 2. Save custom field data
+function iws_save_custom_fields($product_id){
+    $custom_data = $_POST['iws_custom_text_input'];
+    if(!empty($custom_data)){
+        update_post_meta($product_id, 'iws_custom_text_input', esc_attr($custom_data));
+    }
+}
+add_action('woocommerce_process_product_meta', 'iws_save_custom_fields');
+
+// 3. Show custom field data
+function iws_show_custom_field(){
+    $id = get_the_id();
+    $custom_data = get_post_meta($id, 'iws_custom_text_input', true);
+    echo "<div>Custom Data: $custom_data </div>";
+}
+add_action('woocommerce_before_add_to_cart_quantity', 'iws_show_custom_field');
+add_shortcode('iws_show_custom_field', 'iws_show_custom_field');
