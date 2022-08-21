@@ -1,0 +1,65 @@
+# Created by https://www.toptal.com/developers/gitignore/api/react,wordpress
+# Edit at https://www.toptal.com/developers/gitignore?templates=react,wordpress
+
+### react ###
+.DS_*
+*.log
+logs
+**/*.backup.*
+**/*.back.*
+
+node_modules
+bower_components
+
+*.sublime*
+
+psd
+thumb
+sketch
+
+### WordPress ###
+# Core
+#
+# Note: if you want to stage/commit WP core files
+# you can delete this whole section/until Configuration.
+server/wp-admin/
+server/wp-content/index.php
+server/wp-content/languages
+server/wp-content/plugins/index.php
+server/wp-content/themes/index.php
+server/wp-includes/
+server/index.php
+server/license.txt
+server/readme.html
+server/wp-*.php
+server/xmlrpc.php
+
+# Configuration
+server/wp-config.php
+
+# Example themes
+server/wp-content/themes/twenty*/
+
+# Example plugin
+server/wp-content/plugins/hello.php
+
+# Uploads
+server/wp-content/uploads/
+
+# Log files
+
+# htaccess
+server/.htaccess
+
+# All plugins
+# Note: If you wish to whitelist plugins,
+# uncomment the next line
+# server/wp-content/plugins
+
+# All themes
+# Note: If you wish to whitelist themes,
+# uncomment the next line
+server/wp-content/themes
+
+
+# End of https://www.toptal.com/developers/gitignore/api/react,wordpress
