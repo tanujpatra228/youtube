@@ -13,6 +13,7 @@ const Posts = () => {
 
     return(
         <>
+        <h1 className='text-2xl font-bold'>Posts</h1>
         <div className='w-4/5 py-10 m-auto flex justify-between align-middle flex-wrap gap-10'>
         {
             posts && posts.map(post => {
