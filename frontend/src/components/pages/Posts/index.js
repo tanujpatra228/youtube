@@ -22,7 +22,7 @@ const Posts = () => {
                 return (
                     <div key={post.id} className='card p-3 w-[330px] shadow-lg rounded-lg flex gap-5 flex-col'>
                         <Link to={`/posts/${post.id}`}>
-                            <img src="https://via.placeholder.com/500" alt={post.title.rendered} />
+                            <img src={post.featured_src ? post.featured_src : 'https://via.placeholder.com/500'} alt={post.title.rendered} />
                             <h2 className='text-lg font-bold'>{post.title.rendered}</h2>
                             <p dangerouslySetInnerHTML={{__html: post.excerpt.rendered}}></p>
                         </Link>
