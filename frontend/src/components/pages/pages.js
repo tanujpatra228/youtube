@@ -5,6 +5,7 @@ import Home from './Home';
 import Login from './Login';
 import Posts from './Posts';
 import Single from './Single';
+import AddPost from './AddPost';
 
 const Pages = () => {
   return (
@@ -15,6 +16,7 @@ const Pages = () => {
           <Route path="/posts" element={<Posts />} />
           <Route path="/posts/:id" element={<Single />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/add-post" element={<AddPost />} />
       </Routes>
     </>
   )
