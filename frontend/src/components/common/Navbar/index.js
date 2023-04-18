@@ -1,12 +1,12 @@
 import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { logout } from '../../../redux/slice/authSlice';
 
-const Navbar = () => {
+const Navbar = ({authUser}) => {
   // const auth = localStorage.getItem('user');
   const dispatch = useDispatch();
-  const authUser = useSelector((state) => state.auth.user);
+  
   console.log('authUser', authUser);
   return (
     <div className='p-5 '>
