@@ -21,7 +21,7 @@ const Pages = () => {
           <Route path="/login" element={<Login />} />
 
           <Route element={<ProtectedRoute authUser={authUser} />}>
-            <Route path="/add-post" element={<AddPost />} />
+            <Route path="/add-post" element={<AddPost authUser={authUser} />} />
             <Route path="/profile" element={<div>Profile Page</div>} />
           </Route>
 

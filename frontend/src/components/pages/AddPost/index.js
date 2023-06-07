@@ -3,31 +3,50 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 
-const AddPost = () => {
-    const user = localStorage.getItem('user');
+const AddPost = ({ authUser }) => {
     const formik = useFormik({
         // Initial values
         initialValues: {
             title: '',
             content: '',
+            featured_image: null,
         },
 
         // Vlidations
         validationSchema: Yup.object({
             title: Yup.string().required(),
             content: Yup.string().required(),
+            featured_image: Yup.mixed().required(),
         }),
 
         // Submit
-        onSubmit: (data) => {
-            const { token } = JSON.parse(user);
+        onSubmit: async (data) => {
+            const { token } = authUser;
             const headers = {
                 Authorization: `Bearer ${token}`,
             };
+            let featuredMediaId = 0;
+
+            if (data.featured_image) {
+                // Featured Image
+                const formData = new FormData();
+                formData.append('file', data.featured_image);
+                const response = await axios.post(`${process.env.REACT_APP_API_ROOT}/media`, formData, {
+                        headers: headers,
+                        'Content-Type': 'multipart/form-data'
+                    });
+
+                featuredMediaId = response.data.id
+            }
+
+            // Create Post
             const post = {
-                ...data,
+                title: data.title,
+                content: data.content,
                 status: 'publish'
             };
+
+            if (featuredMediaId) post.featured_media = featuredMediaId;
 
             axios.post(`${process.env.REACT_APP_API_ROOT}/posts`, post, {
                 headers: headers
@@ -70,6 +89,18 @@ const AddPost = () => {
                             onChange={formik.handleChange}
                             value={formik.values.content}
                         ></textarea>
+                    </div>
+                    <div className="mb-5">
+                        <label className="block text-gray-700 font-bold mb-2" htmlFor="post-title">
+                            Featured Image
+                        </label>
+                        <input
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="post-title"
+                            type="file"
+                            name="featured_image"
+                            // value={formik.values.featured_image}
+                            onChange={(e) => formik.setFieldValue('featured_image', e.target.files[0])}
+                        />
                     </div>
                     <input type='submit' className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" value='Create Post' />
                 </form>
