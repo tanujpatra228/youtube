@@ -25,38 +25,21 @@ const AddPost = ({ authUser }) => {
             const headers = {
                 Authorization: `Bearer ${token}`,
             };
-            let featuredMediaId = 0;
+            const formData = new FormData();
+            formData.append('title', data.title);
+            formData.append('content', data.content);
 
             if (data.featured_image) {
                 // Featured Image
-                const formData = new FormData();
-                formData.append('file', data.featured_image);
-                const response = await axios.post(`${process.env.REACT_APP_API_ROOT}/media`, formData, {
-                        headers: headers,
-                        'Content-Type': 'multipart/form-data'
-                    });
-
-                featuredMediaId = response.data.id
+                formData.append('featured_img', data.featured_image);
             }
 
-            // Create Post
-            const post = {
-                title: data.title,
-                content: data.content,
-                status: 'publish'
-            };
+            const response = await axios.post(`${process.env.REACT_APP_API_ROOT}/create-post`, formData, {
+                    headers: headers,
+                    'Content-Type': 'multipart/form-data'
+                });
 
-            if (featuredMediaId) post.featured_media = featuredMediaId;
-
-            axios.post(`${process.env.REACT_APP_API_ROOT}/posts`, post, {
-                headers: headers
-            })
-            .then((res) => {
-                console.log('res', res);
-            })
-            .catch((err) => {
-                console.log('err', err.message);
-            });
+            console.log('response', response);
         }
     });
 
