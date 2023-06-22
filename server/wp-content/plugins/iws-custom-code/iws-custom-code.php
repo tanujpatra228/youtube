@@ -59,6 +59,24 @@ function iwsCreatePostWithFeaturedImg($request) {
     ];
 }
 
+function iwsRegisterUser($request) {
+    $params = $request->get_params();
+    $username = sanitize_text_field($params['username']);
+    $email = wp_kses_post($params['email']);
+    $password = wp_kses_post($params['password']);
+
+    $user = wp_create_user($username, $password, $email);
+
+    if (is_wp_error($user)) {
+        return ['status' => 'REGISTER_FAILED', 'error', $user->get_error_message()];
+    }
+
+    return [
+        'user' => $user,
+        'starus' => 201,
+    ];
+}
+
 add_action('rest_api_init', function () {
     register_rest_field('post', 'featured_src', [
         'get_callback' => 'iwsGetFeaturedImgSrc',
@@ -67,5 +85,10 @@ add_action('rest_api_init', function () {
     register_rest_route('wp/v2', 'create-post', [
         'methods' => "POST",
         'callback' => 'iwsCreatePostWithFeaturedImg'
+    ]);
+
+    register_rest_route('wp/v2', 'register', [
+        'methods' => "POST",
+        'callback' => 'iwsRegisterUser'
     ]);
 });
